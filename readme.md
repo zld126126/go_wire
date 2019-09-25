@@ -2,7 +2,7 @@
 go get github.com/google/wire
 
 步骤2：
-创建daemon.go 和 wire.go
+创建service目录下的文件 和 wire.go
 ****(wire.go一定要有// +build wireinject)****
 
 步骤3：

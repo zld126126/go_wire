@@ -1,15 +1,41 @@
 package main
 
-import "awesomeProject/wire"
+import (
+	"awesomeProject/service"
+	"awesomeProject/wire"
+	"log"
+)
 
 func main() {
-	// 使用wire前
-	message := wire.NewMessage("default wire-使用wire前")
-	greeter := wire.NewGreeter(message)
-	event1 := wire.NewEvent(greeter)
-	event1.Start()
+	//hand()
+	auto()
+}
 
-	// 使用wire后
-	event2 := wire.InitializeEvent("my_wire-使用wire后")
-	event2.Start()
+//手动注入
+func hand() {
+	service.NewUserService(1, "dong").Impl.DoA()
+}
+
+//自动注入
+func auto() {
+	//复杂逻辑注入
+	userService, err := wire.NewUserService(1, "dong")
+	if err != nil {
+		log.Fatal(err)
+	}
+	userService.Impl.DoB()
+
+	//简单注入
+	logService, err := wire.InitLogService("haha")
+	if err != nil {
+		log.Fatal(err)
+	}
+	logService.Write()
+
+	//简单注入
+	configService, err := wire.InitConfigService([]string{"china", "win", "hello world"}, "8.8.8.8")
+	if err != nil {
+		log.Fatal(err)
+	}
+	configService.Get()
 }
